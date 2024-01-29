@@ -1,6 +1,7 @@
 #include <flutter/dart_project.h>
 #include <flutter/flutter_view_controller.h>
 #include <windows.h>
+
 #include "flutter_window.h"
 #include "utils.h"
 
@@ -26,7 +27,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
   FlutterWindow window(project);
   Win32Window::Point origin(10, 10);
   Win32Window::Size size(1280, 720);
-  if (!window.CreateAndShow(L"ez_book", origin, size)) {
+  if (!window.CreateAndShow(L"ebook", origin, size)) {
     return EXIT_FAILURE;
   }
   window.SetQuitOnClose(true);

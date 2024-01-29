@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:ez_book/src/models/books.dart';
-import 'package:ez_book/src/pages/detail/detail.dart';
-import 'package:ez_book/src/settings/settings_controller.dart';
+import 'package:ebook/src/models/books.dart';
+import 'package:ebook/src/pages/detail/detail.dart';
+import 'package:ebook/src/settings/settings_controller.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'dart:async';
 
-class MovieHeader extends StatefulWidget {
-  MovieHeader({Key? key, required this.settingsController}) : super(key: key);
+class BookHeader extends StatefulWidget {
+  BookHeader({Key? key, required this.settingsController}) : super(key: key);
 
-  final List<Books> moviesHeaderList = Books.generateHeaderList();
+  final List<Books> booksHeaderList = Books.generateHeaderList();
   final SettingsController settingsController;
   @override
-  State<MovieHeader> createState() => _MovieHeaderState();
+  State<BookHeader> createState() => _BookHeaderState();
 }
 
-class _MovieHeaderState extends State<MovieHeader> {
+class _BookHeaderState extends State<BookHeader> {
   final _pageController = PageController(viewportFraction: 1, keepPage: true);
 
   int _currentPage = 0;
@@ -24,7 +24,7 @@ class _MovieHeaderState extends State<MovieHeader> {
   void initState() {
     super.initState();
     _timer = Timer.periodic(const Duration(seconds: 5), (Timer timer) {
-      if (_currentPage < widget.moviesHeaderList.length) {
+      if (_currentPage < widget.booksHeaderList.length) {
         _currentPage++;
       } else {
         _currentPage = 0;
@@ -56,7 +56,7 @@ class _MovieHeaderState extends State<MovieHeader> {
         children: [
           PageView(
               controller: _pageController,
-              children: widget.moviesHeaderList
+              children: widget.booksHeaderList
                   .map((e) => GestureDetector(
                         onTap: () => Navigator.of(context).push(
                           MaterialPageRoute(
@@ -130,7 +130,7 @@ class _MovieHeaderState extends State<MovieHeader> {
                       curve: Curves.easeInOut);
                 },
                 controller: _pageController,
-                count: widget.moviesHeaderList.length,
+                count: widget.booksHeaderList.length,
                 effect: const ExpandingDotsEffect(
                     expansionFactor: 4,
                     dotWidth: 8,

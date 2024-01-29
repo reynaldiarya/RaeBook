@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:ez_book/src/models/books.dart';
-import 'package:ez_book/src/pages/read/widget/bottom_sheet.dart';
-import 'package:ez_book/src/settings/settings_controller.dart';
+import 'package:ebook/src/models/books.dart';
+import 'package:ebook/src/pages/read/widget/bottom_sheet.dart';
+import 'package:ebook/src/settings/settings_controller.dart';
 
 class ReadPage extends StatefulWidget {
   const ReadPage(
@@ -40,7 +40,7 @@ class _ReadPageState extends State<ReadPage> {
               ],
               floating: true,
               elevation: 0,
-              backgroundColor: Theme.of(context).colorScheme.primary,
+              backgroundColor: Color(0xFF6741FF),
               title: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

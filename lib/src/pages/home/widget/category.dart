@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:ez_book/src/models/books.dart';
-import 'package:ez_book/src/pages/detail/detail.dart';
-import 'package:ez_book/src/pages/home/widget/category_title.dart';
-import 'package:ez_book/src/settings/settings_controller.dart';
+import 'package:ebook/src/models/books.dart';
+import 'package:ebook/src/pages/detail/detail.dart';
+import 'package:ebook/src/pages/home/widget/category_title.dart';
+import 'package:ebook/src/settings/settings_controller.dart';
 
 class Category extends StatelessWidget {
   Category({Key? key, required this.settingsController}) : super(key: key);
@@ -11,7 +11,6 @@ class Category extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size _size = MediaQuery.of(context).size;
-
     return Column(
       children: [
         const CategoryTitle(title: "Recommended Books"),

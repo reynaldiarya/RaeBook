@@ -7,7 +7,7 @@ class Themes {
         const ColorScheme.light().copyWith(secondary: Colors.grey[300]),
     fontFamily: 'Roboto',
   );
-  static final datkTheme = ThemeData(
+  static final darkTheme = ThemeData(
     scaffoldBackgroundColor: Colors.grey[900],
     colorScheme: const ColorScheme.dark().copyWith(secondary: Colors.black38),
     fontFamily: 'Roboto',

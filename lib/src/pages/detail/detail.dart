@@ -1,15 +1,43 @@
 import 'package:flutter/material.dart';
-import 'package:ez_book/src/models/books.dart';
-import 'package:ez_book/src/pages/read/read.dart';
-import 'package:ez_book/src/settings/settings_controller.dart';
 import 'package:readmore/readmore.dart';
+import 'package:ebook/src/models/books.dart';
+import 'package:ebook/src/pages/read/read.dart';
+import 'package:ebook/src/settings/settings_controller.dart';
+import 'package:ebook/src/api.dart';
 
-class DetailPage extends StatelessWidget {
+class DetailPage extends StatefulWidget {
   const DetailPage(
       {Key? key, required this.books, required this.settingsController})
       : super(key: key);
   final Books books;
   final SettingsController settingsController;
+
+  @override
+  _DetailPageState createState() => _DetailPageState();
+}
+
+class _DetailPageState extends State<DetailPage> {
+  List<int> idbook = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchDataFromApi();
+  }
+
+  Future<void> fetchDataFromApi() async {
+    try {
+      var myBooks = await Api.getIdMyBook();
+
+      setState(() {
+        idbook = myBooks;
+      });
+    } catch (e) {
+      // Handle kesalahan jika ada
+      print('Error fetching data: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,9 +107,9 @@ class DetailPage extends StatelessWidget {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(10),
                         child: Hero(
-                          tag: books,
+                          tag: widget.books,
                           child: Image.asset(
-                            'assets/images/' + books.imgUrl.toString(),
+                            'assets/images/' + widget.books.imgUrl.toString(),
                             fit: BoxFit.cover,
                             width: 150,
                             height: 220,
@@ -93,7 +121,7 @@ class DetailPage extends StatelessWidget {
                       height: 12,
                     ),
                     Text(
-                      books.name.toString(),
+                      widget.books.name.toString(),
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 22,
@@ -103,7 +131,7 @@ class DetailPage extends StatelessWidget {
                       height: 5,
                     ),
                     Text(
-                      books.auther.toString(),
+                      widget.books.auther.toString(),
                       style: const TextStyle(
                           fontWeight: FontWeight.normal,
                           fontSize: 16,
@@ -124,7 +152,8 @@ class DetailPage extends StatelessWidget {
                           width: 5,
                         ),
                         Text(
-                          books.score.toString() + '(${books.review})',
+                          widget.books.score.toString() +
+                              '(${widget.books.review})',
                           style: const TextStyle(
                             fontWeight: FontWeight.normal,
                             fontSize: 15,
@@ -142,7 +171,8 @@ class DetailPage extends StatelessWidget {
                           width: 5,
                         ),
                         Text(
-                          numberFormat(int.parse(books.view.toString())) +
+                          numberFormat(
+                                  int.parse(widget.books.view.toString())) +
                               " Read",
                           style: const TextStyle(
                             fontWeight: FontWeight.normal,
@@ -156,12 +186,13 @@ class DetailPage extends StatelessWidget {
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: books.type!
+                      children: (widget.books.type ?? [])
                           .map((e) => Padding(
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 5),
                                 child: Chip(
-                                  label: Text(e),
+                                  label: Text(e[0] ??
+                                      ''), // Memastikan elemen pertama tidak null
                                   backgroundColor:
                                       Theme.of(context).colorScheme.secondary,
                                 ),
@@ -170,7 +201,7 @@ class DetailPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 12),
                     ReadMoreText(
-                      books.desc.toString(),
+                      widget.books.desc.toString(),
                       trimLines: 5,
                       textAlign: TextAlign.justify,
                       colorClickableText: Colors.pink,
@@ -191,11 +222,27 @@ class DetailPage extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        _buildEvelatedButton(
-                            Icons.add, "Add To Library", Colors.grey.shade800,
-                            () {
-                          print("Add To Library.");
-                        }),
+                        FutureBuilder(
+                            future: fetchDataFromApi(),
+                            builder: (context, snapshot) {
+                              bool isInLibrary =
+                                  idbook.contains(widget.books.id);
+                              return _buildEvelatedButton(
+                                isInLibrary ? Icons.check : Icons.add,
+                                isInLibrary ? "In Library" : "Add To Library",
+                                Colors.grey.shade800,
+                                () async {
+                                  await Api.detailAddRemoveBook(
+                                    context: context,
+                                    text: isInLibrary
+                                        ? "In Library"
+                                        : "Add To Library",
+                                    bookId: widget.books.id
+                                        .toString(), // Berikan nilai bookId di sini
+                                  );
+                                },
+                              );
+                            }),
                         const SizedBox(
                           width: 15,
                         ),
@@ -203,8 +250,9 @@ class DetailPage extends StatelessWidget {
                             const Color(0xFF6741FF), () {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => ReadPage(
-                                    books: books,
-                                    settingsController: settingsController,
+                                    books: widget.books,
+                                    settingsController:
+                                        widget.settingsController,
                                   )));
                         }),
                       ],
@@ -226,11 +274,13 @@ class DetailPage extends StatelessWidget {
         width: 150,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-              elevation: 0,
-              primary: color,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10))),
-          onPressed: () => action(),
+            elevation: 0,
+            primary: color,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+          onPressed: () async => action(),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

@@ -1,25 +1,53 @@
 import 'package:flutter/material.dart';
-import 'package:ez_book/src/models/books.dart';
-import 'package:ez_book/src/pages/detail/detail.dart';
-import 'package:ez_book/src/pages/home/widget/category_title.dart';
-import 'package:ez_book/src/settings/settings_controller.dart';
+import 'package:ebook/src/pages/detail/detail.dart';
+import 'package:ebook/src/pages/home/widget/category_title.dart';
+import 'package:ebook/src/settings/settings_controller.dart';
+import 'package:ebook/src/models/books.dart';
+import 'package:ebook/src/api.dart';
 
-class TrendingMovies extends StatelessWidget {
-  TrendingMovies({Key? key, required this.settingsController})
-      : super(key: key);
-  final List<Books> moviesTrendingList = Books.generateItemsList();
+class BookList extends StatefulWidget {
+  BookList({Key? key, required this.settingsController}) : super(key: key);
+
   final SettingsController settingsController;
+
+  @override
+  _BookListState createState() => _BookListState();
+}
+
+class _BookListState extends State<BookList> {
+  List<Books> booksList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    // Panggil metode untuk mengambil data dari API saat widget diinisialisasi
+    fetchDataFromApi();
+  }
+
+  Future<void> fetchDataFromApi() async {
+    try {
+      var Books = await Api.getBook();
+
+      setState(() {
+        booksList = Books;
+      });
+    } catch (e) {
+      // Handle kesalahan jika ada
+      print('Error fetching data: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const CategoryTitle(title: "Trending Books"),
+        const CategoryTitle(title: "All Books"),
         ListView.separated(
           padding: const EdgeInsets.all(20),
           primary: false,
           shrinkWrap: true,
           physics: const BouncingScrollPhysics(),
-          itemCount: moviesTrendingList.length,
+          itemCount: booksList.length,
           separatorBuilder: (BuildContext context, int index) {
             return const SizedBox(
               height: 10,
@@ -30,8 +58,8 @@ class TrendingMovies extends StatelessWidget {
               onTap: () => Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => DetailPage(
-                    settingsController: settingsController,
-                    books: moviesTrendingList[index],
+                    settingsController: widget.settingsController,
+                    books: booksList[index],
                   ),
                 ),
               ),
@@ -42,10 +70,9 @@ class TrendingMovies extends StatelessWidget {
                     ClipRRect(
                       borderRadius: BorderRadius.circular(15),
                       child: Hero(
-                        tag: moviesTrendingList[index],
+                        tag: booksList[index],
                         child: Image.asset(
-                          'assets/images/' +
-                              moviesTrendingList[index].imgUrl.toString(),
+                          'assets/images/' + booksList[index].imgUrl.toString(),
                           fit: BoxFit.cover,
                           width: 90,
                         ),
@@ -57,7 +84,7 @@ class TrendingMovies extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            moviesTrendingList[index].name.toString(),
+                            booksList[index].name.toString(),
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 16),
@@ -66,14 +93,17 @@ class TrendingMovies extends StatelessWidget {
                             height: 5,
                           ),
                           Text(
-                            moviesTrendingList[index].desc.toString(),
+                            booksList[index].desc.toString(),
                             style: const TextStyle(color: Colors.grey),
                           ),
                           const SizedBox(
                             height: 10,
                           ),
                           Text(
-                            moviesTrendingList[index].type!.join(", "),
+                            booksList[index]
+                                .type!
+                                .join(", ")
+                                .replaceAll(RegExp(r"[\[\]]"), ""),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             softWrap: true,

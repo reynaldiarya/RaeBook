@@ -1,4 +1,4 @@
-package com.example.ezbook
+package com.example.ebook
 
 import io.flutter.embedding.android.FlutterActivity
 

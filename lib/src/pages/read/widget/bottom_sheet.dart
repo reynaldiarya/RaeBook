@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ez_book/src/settings/settings_controller.dart';
+import 'package:ebook/src/settings/settings_controller.dart';
 
 class BottomSheetWidget extends StatefulWidget {
   final Function(TextStyle) onClickedConfirm;

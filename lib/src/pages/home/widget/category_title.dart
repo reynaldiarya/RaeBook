@@ -14,10 +14,6 @@ class CategoryTitle extends StatelessWidget {
             title,
             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
-          Text(
-            'View All',
-            style: TextStyle(color: Theme.of(context).colorScheme.primary),
-          ),
         ],
       ),
     );
