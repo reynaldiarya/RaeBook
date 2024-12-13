@@ -1,16 +1,57 @@
-# ebook
+# RaeBook  
 
-A new Flutter project.
+Aplikasi RaeBook adalah platform untuk membaca buku digital dengan berbagai fitur seperti katalog buku, pencarian, dan sistem bookmark. Aplikasi ini dikembangkan menggunakan Flutter untuk mendukung pengalaman pengguna yang mulus di perangkat Android dan iOS.  
 
-## Getting Started
+## Fitur Utama  
+- **Katalog Buku**  
+  Jelajahi koleksi buku digital yang tersedia berdasarkan kategori atau genre.  
+- **Pencarian Buku**  
+  Cari buku berdasarkan judul tertentu.  
+- **Pembaca Buku Bawaan**  
+  Nikmati pengalaman membaca langsung di aplikasi.  
+- **Bookmark dan Catatan**  
+  Simpan halaman favorit atau tambahkan catatan untuk referensi di masa depan. 
 
-This project is a starting point for a Flutter application.
+## Instalasi  
+### Prasyarat  
+Pastikan Anda telah menginstal:  
+- Flutter SDK ([Panduan Instalasi Flutter](https://flutter.dev/docs/get-started/install))  
+- Android Studio atau Xcode untuk emulasi perangkat.  
 
-A few resources to get you started if this is your first Flutter project:
+### Langkah Instalasi  
+1. **Clone repositori ini**  
+   ```bash
+   git clone https://github.com/reynaldiarya/RaeBook.git
+   cd RaeBook
+   ```
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+2. **Instal Dependensi**  
+   Jalankan perintah berikut untuk menginstal semua paket yang diperlukan:  
+   ```bash
+   flutter pub get
+   ```
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+3. **Konfigurasi API**  
+   - Pastikan backend API Anda berjalan dengan baik. Proyek backend dapat ditemukan di repositori berikut: [RaeBook-Backend](https://github.com/reynaldiarya/RaeBook-Backend).  
+   - Jalankan server backend dengan mengikuti panduan di repositori tersebut.  
+   - Setelah backend berjalan, perbarui file konfigurasi `lib/src/api.dart` aplikasi Flutter Anda untuk menggunakan URL API backend:  
+     ```env
+     static const String apiUrl = "domainanda";
+     ```  
+     - Ganti `domainanda` dengan URL server backend Anda jika menggunakan hosting atau IP publik.
+
+
+4. **Jalankan Aplikasi**  
+   Jalankan aplikasi di emulator atau perangkat fisik:  
+   ```bash
+   flutter run
+   ```
+
+## Lisensi  
+Proyek ini dilisensikan di bawah MIT License. Lihat file [LICENSE](LICENSE) untuk detail lebih lanjut.  
+
+## Kontak  
+Jika Anda memiliki pertanyaan atau umpan balik, silakan hubungi kami di **email@domain.com**.  
+```
+
+README ini mencakup deskripsi aplikasi, fitur utama, teknologi yang digunakan, langkah instalasi, dan informasi tambahan yang relevan untuk pengembang dan pengguna. Anda dapat menyesuaikan bagian-bagian tertentu seperti nama repositori atau fitur sesuai dengan kebutuhan proyek Anda.
